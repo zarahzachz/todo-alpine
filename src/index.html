@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpine Todo List</title>
+</head>
+<body>
+    <section aria-labelledby="todo-title">
+        <h1 id="todo-title">Alpine Todo List</h1>
+
+        <form>
+            <input type="text" aria-label="Write a new item for your todo list" aria-invalid="true"
+                placeholder="E.g. Buy apples">
+            <button type="submit" disabled>Add</button>
+        </form>
+        
+        <div class="empty-state">
+            <p>Congrats! 🎉 You've either completed your list or you're starting a new one. Add your first todo in the field above.</p>
+        </div>
+
+
+        <div class="sr-only" role="status" aria-live="polite">
+            <!-- Add content here to be spoken -->
+        </div>
+
+        <ul>
+            <li>
+                <input type="checkbox" id="item-index">
+                <label for="item-index">Item Name</label>
+    
+                <button aria-label="delete item name">&times;</button>
+            </li>
+        </ul>
+        
+        <footer>
+            <span>3 items left</span> 
+            <!-- <output> maybe? -->
+
+            <div>
+                <input type="radio" name="filterList" id="all">
+                <label for="all">All</label>
+                
+                <input type="radio" name="filterList" id="active">
+                <label for="active">Active</label>
+
+                <input type="radio" name="filterList" id="complete">
+                <label for="complete">Complete</label>
+            </div>
+
+            <button>Clear completed items</button>
+        </footer>
+    </section>
+
+    <style>
+        .empty-state, ul:empty {
+            display: none;
+        }
+
+        ul:not(:empty) + .empty-state {
+            display: block;
+        }
+
+        ::-webkit-input-placeholder { 
+            color: #444;
+            font-style: italic;
+        }
+        ::-moz-placeholder { 
+            color: #444;
+            font-style: italic;
+        }
+        :-ms-input-placeholder { 
+            color: #444;
+            font-style: italic;
+        }
+        :-moz-placeholder { 
+            color: #444;
+            font-style: italic;
+        }
+        .sr-only {
+            position: absolute !important;
+            clip: rect(1px, 1px, 1px, 1px);
+            padding:0 !important;
+            border:0 !important;
+            height: 1px !important;
+            width: 1px !important;
+            overflow: hidden;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+</body>
+</html>
