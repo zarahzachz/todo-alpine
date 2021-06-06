@@ -13,18 +13,24 @@
                 todos: JSON.parse(localStorage.getItem('todos') || '[]'), 
                 todoName: '', 
                 feedback: '' 
-            }">
+            }"
+            x-init="$watch('todos', (val) => localStorage.setItem('todos', JSON.stringify(val)))">
         <h1 id="todo-title">Alpine Todo List</h1>
 
         <form @submit.prevent="
             feedback = todoName
             todos.push({
+                id: (new Date).getTime(),
                 name: todoName,
                 done: false,
             })
             todoName = ''
         ">
-            <input type="text" aria-label="Write a new item for your todo list" aria-invalid="!todoName" placeholder="E.g. Buy apples" x-model="todoName">
+            <input type="text" 
+                    aria-label="Write a new item for your todo list" 
+                    aria-invalid="!todoName" 
+                    placeholder="E.g. Buy apples" 
+                    x-model="todoName">
 
             <button type="submit" :disabled="!todoName">Add</button>
         </form>
@@ -34,18 +40,21 @@
         </div>
 
 
-        <div class="sr-only" role="status" aria-live="polite" x-text="feedback">
+        <div class="sr-only" 
+            role="status" 
+            aria-live="polite" 
+            x-text="feedback">
             <!-- Add content here to be spoken -->
         </div>
         
         <ul>
-            <template x-for="(todo, idx) in todos" :key="idx">
-                <li :x-ref="idx">
-                    <input type="checkbox" :id="`item-${idx}`">
-                    <label :for="`item-${idx}`" x-text="todo.name"></label>
+            <template x-for="todo in todos">
+                <li :key="`index-${todo.id}`">
+                    <input type="checkbox" :id="`item-${todo.id}`">
+                    <label :for="`item-${todo.id}`" x-text="todo.name"></label>
 
                     <button aria-label="`delete ${todo.name}`" 
-                            @click="todos.splice(idx, 1)
+                            @click="todos = todos.filter(t => t.id != todo.id)
                                     feedback = `${todo.name} deleted`">
                         &times;
                     </button>
@@ -110,5 +119,8 @@
     </style>
 
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+
+    <script>
+    </script>
 </body>
 </html>
