@@ -7,18 +7,25 @@
     <title>Alpine Todo List</title>
 </head>
 <body>
-    <section aria-labelledby="todo-title" x-data="{ todos: [], todoName: '', feedback: '' }">
+    <!-- Save todo[] to localStorage? Persist list. -->
+    <section aria-labelledby="todo-title" 
+            x-data="{ 
+                todos: JSON.parse(localStorage.getItem('todos') || '[]'), 
+                todoName: '', 
+                feedback: '' 
+            }">
         <h1 id="todo-title">Alpine Todo List</h1>
 
-        <!-- Add form reset() -->
         <form @submit.prevent="
-            $refs.status.innerText = todoName
+            feedback = todoName
             todos.push({
                 name: todoName,
                 done: false,
             })
+            todoName = ''
         ">
             <input type="text" aria-label="Write a new item for your todo list" aria-invalid="!todoName" placeholder="E.g. Buy apples" x-model="todoName">
+
             <button type="submit" :disabled="!todoName">Add</button>
         </form>
         
@@ -27,18 +34,21 @@
         </div>
 
 
-        <div class="sr-only" role="status" aria-live="polite" x-ref="status">
+        <div class="sr-only" role="status" aria-live="polite" x-text="feedback">
             <!-- Add content here to be spoken -->
         </div>
         
         <ul>
             <template x-for="(todo, idx) in todos" :key="idx">
-                <li>
+                <li :x-ref="idx">
                     <input type="checkbox" :id="`item-${idx}`">
                     <label :for="`item-${idx}`" x-text="todo.name"></label>
-        
-                    <!-- Remove todo from todo[] and DOM on click -->
-                    <button aria-label="`delete ${todo.name}`">&times;</button>
+
+                    <button aria-label="`delete ${todo.name}`" 
+                            @click="todos.splice(idx, 1)
+                                    feedback = `${todo.name} deleted`">
+                        &times;
+                    </button>
                 </li>
             </template>
         </ul>
@@ -48,7 +58,7 @@
 
             <!-- Implement tabbed layout with filtered views -->
             <div>
-                <input type="radio" name="filterList" id="all">
+                <input type="radio" name="filterList" id="all" checked>
                 <label for="all">All</label>
                 
                 <input type="radio" name="filterList" id="active">
