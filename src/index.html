@@ -30,7 +30,7 @@
         <div class="sr-only" role="status" aria-live="polite" x-ref="status">
             <!-- Add content here to be spoken -->
         </div>
-
+        
         <ul>
             <template x-for="(todo, idx) in todos" :key="idx">
                 <li>
@@ -46,6 +46,7 @@
         <footer>
             <span x-show="todos.length" x-text="`${todos.length} items left`"></span>
 
+            <!-- Implement tabbed layout with filtered views -->
             <div>
                 <input type="radio" name="filterList" id="all">
                 <label for="all">All</label>
@@ -57,6 +58,7 @@
                 <label for="complete">Complete</label>
             </div>
 
+            <!-- Clear checked items from list on click -->
             <button>Clear completed items</button>
         </footer>
     </section>
