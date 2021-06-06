@@ -10,18 +10,24 @@
     <section aria-labelledby="todo-title" x-data="{ todos: [], todoName: '', feedback: '' }">
         <h1 id="todo-title">Alpine Todo List</h1>
 
-        <form>
-            <input type="text" aria-label="Write a new item for your todo list" aria-invalid="true"
-                placeholder="E.g. Buy apples">
-            <button type="submit" disabled>Add</button>
+        <!-- Add form reset() -->
+        <form @submit.prevent="
+            $refs.status.innerText = todoName
+            todos.push({
+                name: todoName,
+                done: false,
+            })
+        ">
+            <input type="text" aria-label="Write a new item for your todo list" aria-invalid="!todoName" placeholder="E.g. Buy apples" x-model="todoName">
+            <button type="submit" :disabled="!todoName">Add</button>
         </form>
         
-        <div class="empty-state">
-            <p>Congrats! 🎉 You've either completed your list or you're starting a new one. Add your first todo in the field above.</p>
+        <div :class="todos.length ? 'empty-state' : ''">
+            <p>Congrats! 🎉 You've either completed your list or you're starting a new one. Add your todo in the field above.</p>
         </div>
 
 
-        <div class="sr-only" role="status" aria-live="polite">
+        <div class="sr-only" role="status" aria-live="polite" x-ref="status">
             <!-- Add content here to be spoken -->
         </div>
 
@@ -35,8 +41,7 @@
         </ul>
         
         <footer>
-            <span>3 items left</span> 
-            <!-- <output> maybe? -->
+            <span x-show="todos.length" x-text="`${todos.length} items left`"></span>
 
             <div>
                 <input type="radio" name="filterList" id="all">
