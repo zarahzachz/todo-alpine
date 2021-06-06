@@ -32,12 +32,15 @@
         </div>
 
         <ul>
-            <li>
-                <input type="checkbox" id="item-index">
-                <label for="item-index">Item Name</label>
-    
-                <button aria-label="delete item name">&times;</button>
-            </li>
+            <template x-for="(todo, idx) in todos" :key="idx">
+                <li>
+                    <input type="checkbox" :id="`item-${idx}`">
+                    <label :for="`item-${idx}`" x-text="todo.name"></label>
+        
+                    <!-- Remove todo from todo[] and DOM on click -->
+                    <button aria-label="`delete ${todo.name}`">&times;</button>
+                </li>
+            </template>
         </ul>
         
         <footer>
